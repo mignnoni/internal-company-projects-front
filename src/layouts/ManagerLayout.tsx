@@ -21,14 +21,17 @@ export function ManagerLayout() {
 
     }, [])
 
+    return (
+        <Flex direction={"column"} h="100vh">
+            <Header />
 
-    return(
-        <Flex minH={'100vh'}>
-            <Sidebar />
+            <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
+            <Sidebar/>
             <Flex flexDir={'column'} w="full">
-                <Header />
                 <Outlet />
             </Flex>
+            </Flex>
         </Flex>
-    )
+    );
+
 }

@@ -13,10 +13,10 @@ export function Sidebar() {
 
     if (isDrawerSidebar) {
         return (
-            <Drawer isOpen={isOpen} placement={"left"} onClose={onClose}>
+            <Drawer isOpen={isOpen} placement={'left'} onClose={onClose}>
                 <DrawerOverlay>
-                    <DrawerContent bgColor={'gray.900'}>
-                        <DrawerCloseButton mt="6" color={'white'} sx={{'-webkit-app-region': 'no-drag'}}/>
+                    <DrawerContent>
+                        <DrawerCloseButton mt="6" />
                         <DrawerHeader>Navegação</DrawerHeader>
                         <DrawerBody>
                             <SidebarNav />
@@ -28,7 +28,7 @@ export function Sidebar() {
     }
 
     return(
-        <Box as="aside" w={72} bgColor={'gray.900'} px={3} pt={8}>
+        <Box as="aside" w={64} mr={8}>
             <SidebarNav />
         </Box>
     );

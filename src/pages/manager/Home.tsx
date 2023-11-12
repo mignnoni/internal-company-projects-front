@@ -1,24 +1,37 @@
-import { Box, Divider, Heading, Stack, Text } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DefaultPageLayout } from "../../layouts/DefaultPageLayout";
+import { AxiosError } from "axios";
+import { IArea } from "../../interfaces/IArea";
+import { toast } from "react-toastify";
+import { api } from "../../services/api";
 
 export function Home() {
 
     const { user } = useContext(AuthContext);
+    const [ areas, setAreas ] = useState<IArea[]>();
+
+    const getAreas = () => {
+        api
+        .get<IArea[]>('/area')
+        .then((response) => {
+            setAreas(response.data);
+        })
+        .catch((err: AxiosError) => {
+            toast.error(err.message);
+        })
+    }
+
+    useEffect(() => {
+        getAreas();
+    }, [])
 
     if (user) {
         return (
-            <Box>
-                <Heading>Hello {user.name}</Heading>
-                <Divider />
-                <Stack spacing={4}>
-                {user.roles.map((role) => (
-                    <Text key={role}>
-                        {role}
-                    </Text>
-                ))}
-                </Stack>
-            </Box>
+            <DefaultPageLayout>
+
+            </DefaultPageLayout>
         );
     }
 

@@ -18,17 +18,17 @@ export function SidebarNav() {
         <Stack spacing={"12"} align="flex-start">
         {
             isAdmin && (
-                <Box w="full">
-                <Text fontWeight={"bold"} color="gray.400" fontSize={'small'}>Administrador</Text>
-                <Stack spacing={"4"} mt={4} align={"stretch"}>
-                    <SidebarItem icon={FaUserCircle} href={'/razao/cliente'} title={'Gerentes'} />
-                    <SidebarItem icon={FaUserCircle} href={'/razao/cliente'} title={'Membros'} />
-                </Stack>
-            </Box>
+                <Box>
+                    <Text fontWeight={"bold"} fontSize={'md'}>Administrador</Text>
+                    <Stack spacing={"4"} mt={4} align={"stretch"}>
+                        <SidebarItem icon={FaUserCircle} href={'/manager'} title={'Gerentes'} />
+                        <SidebarItem icon={FaUserCircle} href={'/razao/cliente'} title={'Membros'} />
+                    </Stack>
+                </Box>
             )
         }
-        <Box w="full">
-            <Text fontWeight={"bold"} color="gray.400" fontSize={'small'}>Gerenciar</Text>
+        <Box>
+            <Text fontWeight={"bold"} color="gray.500" fontSize={'md'}>Gerenciar</Text>
             <Stack spacing={"4"} mt={4} align={"stretch"}>
                 <SidebarItem icon={FaCreditCard} href={'/receb/destinar'} title={'Projetos'} />
                 <SidebarItem icon={MdOutlinePix} href={'/receb/pix'} title={'Áreas'} />
