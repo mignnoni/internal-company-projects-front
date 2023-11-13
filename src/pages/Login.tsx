@@ -65,7 +65,7 @@ export default function Login() {
                 <Button
                     type="submit"
                     mt="6"
-                    colorScheme='teal'
+                    colorScheme='purple'
                     size={"lg"}
                 >
                     Entrar

@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
@@ -14,10 +14,10 @@ export function ManagerLayout() {
 
     useEffect(() => {
 
-        if (!user?.roles?.includes(ROLES.Manager)) {
-            toast.error("Você não possui os privilégios necessários para acessar essa página");
-            navigate('/teste');
-        }
+        // if (!user?.roles?.includes(ROLES.Manager)) {
+        //     toast.error("Você não possui os privilégios necessários para acessar essa página");
+        //     navigate('/teste');
+        // }
 
     }, [])
 
