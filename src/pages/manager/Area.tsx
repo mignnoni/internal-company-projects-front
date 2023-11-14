@@ -10,8 +10,8 @@ import { ActionButtons } from "../../components/Table/ActionButtons";
 
 export function Area() {
 
-    // const { user } = useContext(AuthContext);
-    // const [ areas, setAreas ] = useState<IArea[]>();
+    const { user } = useContext(AuthContext);
+    const [ areas, setAreas ] = useState<IArea[]>([]);
 
     const bg = useColorModeValue('purple.100', 'purple.600');
     
@@ -25,20 +25,25 @@ export function Area() {
         console.log(id);
     }
 
-    // const getAreas = () => {
-    //     api
-    //     .get<IArea[]>('/area')
-    //     .then((response) => {
-    //         setAreas(response.data);
-    //     })
-    //     .catch((err: AxiosError) => {
-    //         toast.error(err.message);
-    //     })
-    // }
+    const handleCreate = (): void => {
+        console.log('create');
+    }
 
-    // useEffect(() => {
-    //     getAreas();
-    // }, [])
+    const getAreas = () => {
+
+        api
+        .get<IArea[]>('/area')
+        .then((response) => {
+            setAreas(response.data);
+        })
+        .catch((err: AxiosError) => {
+            toast.error(err.message);
+        })
+    }
+
+    useEffect(() => {
+        getAreas();
+    }, [user])
 
     // if (user) {
     //     return (
@@ -48,9 +53,9 @@ export function Area() {
     //     );
     // }
 
-    if(1 == 1) {
+    if(user) {
         return (
-            <DefaultPageLayout title={'Áreas'}>
+            <DefaultPageLayout title={'Áreas'} handleCreate={handleCreate}>
                 <TableContainer>
                     <Table style={{borderCollapse:"separate", borderSpacing:"0 1em"}}>
                         <Thead>
@@ -60,18 +65,16 @@ export function Area() {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr bg={bg}>
-                                <Td borderLeftRadius={'10px'} fontWeight={'bold'}>Projetos</Td>
-                                <Td borderRightRadius={"10px"}>
-                                    <ActionButtons id={id} deleteAction={handleDelete} editAction={handleEdit}  />
-                                </Td>
-                            </Tr>
-                            <Tr bg={bg}>
-                                <Td borderLeftRadius={'10px'} fontWeight={'bold'}>Geolocalização</Td>
-                                <Td borderRightRadius={"10px"}>
-                                    <ActionButtons id={id} deleteAction={handleDelete} editAction={handleEdit}  />
-                                </Td>
-                            </Tr>
+                            {
+                                !!areas && areas.map((area) => (
+                                    <Tr key={area.id} bg={bg}>
+                                        <Td borderLeftRadius={'10px'} fontWeight={'bold'}>{area.title}</Td>
+                                        <Td borderRightRadius={"10px"}>
+                                            <ActionButtons id={area.id} deleteAction={handleDelete} editAction={handleEdit}  />
+                                        </Td>
+                                    </Tr>
+                                ))
+                            }
                         </Tbody>
                     </Table>
                 </TableContainer>

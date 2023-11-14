@@ -17,6 +17,8 @@ api.interceptors.response.use(response => {
 
     if (error?.response?.status == 401)
         signOut();
+    else if (error?.response?.status == 403)
+        console.log(error);
 
     return Promise.reject(error);
 

@@ -112,9 +112,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
             })
 
             if (isMemberOnly)
-                window.location.href = '/teste';
+                window.location.href = '/projects';
             else
-                window.location.href = '/manager';
+                window.location.href = '/manager/area';
         })
         .catch((err: AxiosError) => {
             toast.error(err?.message);
