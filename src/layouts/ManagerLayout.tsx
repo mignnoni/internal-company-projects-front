@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { ROLES } from "../constants/Roles";
 import { Sidebar } from "../components/Sidebar";
@@ -10,7 +10,6 @@ import { NoPrivilegies } from "../components/NoPrivilegies";
 export function ManagerLayout() {
 
     const { user } = useContext(AuthContext);
-    const navigate = useNavigate();
 
     const [ isManager ] = useState<boolean>(() => {
 

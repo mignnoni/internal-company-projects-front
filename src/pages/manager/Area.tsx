@@ -1,4 +1,4 @@
-import { Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import { DefaultPageLayout } from "../../layouts/DefaultPageLayout";
@@ -7,15 +7,17 @@ import { IArea } from "../../interfaces/IArea";
 import { toast } from "react-toastify";
 import { api } from "../../services/api";
 import { ActionButtons } from "../../components/Table/ActionButtons";
+import { CreateAreaAndTechModal } from "../../components/Modal/CreateAreaAndTechModal";
+import { NoPrivilegies } from "../../components/NoPrivilegies";
 
 export function Area() {
+
+    const { onOpen, onClose, isOpen } = useDisclosure();
 
     const { user } = useContext(AuthContext);
     const [ areas, setAreas ] = useState<IArea[]>([]);
 
     const bg = useColorModeValue('purple.100', 'purple.600');
-    
-    const [ id ] = useState<string>('teste');
 
     const handleEdit = (id: string): void => {
         console.log(id);
@@ -23,10 +25,6 @@ export function Area() {
 
     const handleDelete = (id: string): void => {
         console.log(id);
-    }
-
-    const handleCreate = (): void => {
-        console.log('create');
     }
 
     const getAreas = () => {
@@ -43,19 +41,11 @@ export function Area() {
 
     useEffect(() => {
         getAreas();
-    }, [user])
+    }, [])
 
-    // if (user) {
-    //     return (
-    //         <DefaultPageLayout>
-
-    //         </DefaultPageLayout>
-    //     );
-    // }
-
-    if(user) {
+    if (user) {
         return (
-            <DefaultPageLayout title={'Áreas'} handleCreate={handleCreate}>
+            <DefaultPageLayout title={'Áreas'} handleCreate={onOpen}>
                 <TableContainer>
                     <Table style={{borderCollapse:"separate", borderSpacing:"0 1em"}}>
                         <Thead>
@@ -78,11 +68,12 @@ export function Area() {
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <CreateAreaAndTechModal onClose={onClose} isOpen={isOpen} model='area' name={'Área'} />
             </DefaultPageLayout>
         );
     }
 
     return (
-        <Heading>Hello World</Heading>
+        <NoPrivilegies />
     );
 }

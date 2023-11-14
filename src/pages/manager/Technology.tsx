@@ -1,4 +1,4 @@
-import { Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Td, Th, Thead, Tr, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import { DefaultPageLayout } from "../../layouts/DefaultPageLayout";
@@ -7,15 +7,17 @@ import { ITechnology } from "../../interfaces/ITechnology";
 import { toast } from "react-toastify";
 import { api } from "../../services/api";
 import { ActionButtons } from "../../components/Table/ActionButtons";
+import { CreateAreaAndTechModal } from "../../components/Modal/CreateAreaAndTechModal";
+import { NoPrivilegies } from "../../components/NoPrivilegies";
 
 export function Technology() {
 
-    // const { user } = useContext(AuthContext);
-    // const [ areas, setAreas ] = useState<IArea[]>();
+    const { onOpen, onClose, isOpen } = useDisclosure();
+
+    const { user } = useContext(AuthContext);
+    const [ technologies, setTechnologies ] = useState<ITechnology[]>();
 
     const bg = useColorModeValue('purple.100', 'purple.600');
-    
-    const [ id ] = useState<string>('teste');
 
     const handleEdit = (id: string): void => {
         console.log(id);
@@ -25,36 +27,25 @@ export function Technology() {
         console.log(id);
     }
 
-    const handleCreate = (): void => {
-        console.log('create');
+    const getTechnologies = () => {
+        api
+        .get<ITechnology[]>('/technology')
+        .then((response) => {
+            setTechnologies(response.data);
+        })
+        .catch((err: AxiosError) => {
+            toast.error(err.message);
+        })
     }
 
-    // const getAreas = () => {
-    //     api
-    //     .get<IArea[]>('/area')
-    //     .then((response) => {
-    //         setAreas(response.data);
-    //     })
-    //     .catch((err: AxiosError) => {
-    //         toast.error(err.message);
-    //     })
-    // }
+    useEffect(() => {
+        getTechnologies();
+    }, [])
 
-    // useEffect(() => {
-    //     getAreas();
-    // }, [])
 
-    // if (user) {
-    //     return (
-    //         <DefaultPageLayout>
-
-    //         </DefaultPageLayout>
-    //     );
-    // }
-
-    if(1 == 1) {
+    if (user) {
         return (
-            <DefaultPageLayout title={'Tecnologias'}>
+            <DefaultPageLayout title={'Tecnologias'} handleCreate={onOpen}>
                 <TableContainer>
                     <Table style={{borderCollapse:"separate", borderSpacing:"0 1em"}}>
                         <Thead>
@@ -64,26 +55,25 @@ export function Technology() {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr bg={bg}>
-                                <Td borderLeftRadius={'10px'} fontWeight={'bold'}>.NET</Td>
-                                <Td borderRightRadius={"10px"}>
-                                    <ActionButtons id={id} deleteAction={handleDelete} editAction={handleEdit}  />
-                                </Td>
-                            </Tr>
-                            <Tr bg={bg}>
-                                <Td borderLeftRadius={'10px'} fontWeight={'bold'}>NestJS</Td>
-                                <Td borderRightRadius={"10px"}>
-                                    <ActionButtons id={id} deleteAction={handleDelete} editAction={handleEdit}  />
-                                </Td>
-                            </Tr>
+                            {
+                                !!technologies && technologies.map((technology) => (
+                                    <Tr key={technology.id} bg={bg}>
+                                        <Td borderLeftRadius={'10px'} fontWeight={'bold'}>{technology.title}</Td>
+                                        <Td borderRightRadius={"10px"}>
+                                            <ActionButtons id={technology.id} deleteAction={handleDelete} editAction={handleEdit}  />
+                                        </Td>
+                                    </Tr>
+                                ))
+                            }
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <CreateAreaAndTechModal onClose={onClose} isOpen={isOpen} model='technology' name={'Tecnologia'} />
             </DefaultPageLayout>
         );
     }
 
     return (
-        <Heading>Hello World</Heading>
+        <NoPrivilegies />
     );
 }
